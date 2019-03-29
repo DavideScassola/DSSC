@@ -27,10 +27,10 @@ int main( int argc, char * argv[] )
     int a[N];
 
 
-    /////// static ///////////////////////////
+    ///////////// static /////////////
+    printf("\nschedule: static (default chunk size)\n");
     # pragma omp parallel num_threads(nthreads)
     {
-        //nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
 	int i;
@@ -46,10 +46,11 @@ int main( int argc, char * argv[] )
     printf("\n\n");
 
 
-    /////////// static, with chunk size 1 ////////////
+
+    ///////////// static, with chunk size 1 /////////////
+    printf("\nschedule: static, with chunk size 1\n");
     # pragma omp parallel num_threads(nthreads)
     {
-        //nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
 	int i;
@@ -65,7 +66,8 @@ int main( int argc, char * argv[] )
     printf("\n\n");
 
 
-    /////////// static, with chunk size 10 ////////////
+    ///////////// static, with chunk size 10 /////////////
+    printf("\nschedule: static, with chunk size 10\n");
     # pragma omp parallel num_threads(nthreads)
     {
         //nthreads = omp_get_num_threads();
@@ -85,7 +87,8 @@ int main( int argc, char * argv[] )
                                                                                                                                                                                                                                        
 
 
-    /////// dynamic ////////////////////
+    ///////////// dynamic /////////////
+    printf("\nschedule: dynamic (default chunk size)\n");
     # pragma omp parallel num_threads(nthreads)
     {
         //nthreads = omp_get_num_threads();
@@ -105,7 +108,8 @@ int main( int argc, char * argv[] )
 
 
 
-    /////// dynamic, with chunk size 1 ////////////////////
+    ///////////// dynamic, with chunk size 1 /////////////
+    printf("\ndynamic, with chunk size 1\n");
     # pragma omp parallel num_threads(nthreads)
     {
         nthreads = omp_get_num_threads();
@@ -126,7 +130,8 @@ int main( int argc, char * argv[] )
 
 
 
-    /////// dynamic, with chunk size 10 ////////////////////
+    ///////////// dynamic, with chunk size 10 /////////////
+    printf("\ndynamic, with chunk size 10\n");
     # pragma omp parallel num_threads(nthreads)
     {
         nthreads = omp_get_num_threads();
