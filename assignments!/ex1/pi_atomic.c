@@ -33,11 +33,12 @@ int main( int argc, char * argv[] )
     const int N = (int) 1E8;
     int nthreads = argc>=2 ? atoi(argv[1]) : 4;
 
+    printf("n of threads=%d, ", nthreads);
     double start = omp_get_wtime();
     double pi =  parallel_pi(N, nthreads);
     double end = omp_get_wtime();
 
-    printf("pi=%.10f\ntime=%f\n", pi, end-start);
+    printf("pi=%.10f, time=%f\n", pi, end-start);
 
     return 0;
 }

@@ -9,7 +9,7 @@ double f(double x)
 
 double serial_pi(int N)
 {
-    double h = 1/N;
+    double h = 1./N;
     double almost_pi = 0;
 
     int i;
