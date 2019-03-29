@@ -1,0 +1,24 @@
+pi_serial:
+pi=3.1415926536
+time=1.476235
+pi_atomic:
+n of threads=1, pi=3.1415926536, time=1.478856
+n of threads=2, pi=3.1415926536, time=0.747056
+n of threads=4, pi=3.1415926536, time=0.384791
+n of threads=8, pi=3.1415926536, time=0.204607
+n of threads=16, pi=3.1415926536, time=0.107744
+n of threads=20, pi=3.1415926536, time=0.161645
+pi_critical_section:
+n of threads=1, pi=3.1415926536, time=1.480275
+n of threads=2, pi=3.1415926536, time=0.758788
+n of threads=4, pi=3.1415926536, time=0.389041
+n of threads=8, pi=3.1415926536, time=0.204942
+n of threads=16, pi=3.1415926536, time=0.107743
+n of threads=20, pi=3.1415926536, time=0.204327
+pi_reduction:
+n of threads=1, pi=3.1415926536, time=1.479993
+n of threads=2, pi=3.1415926536, time=0.759059
+n of threads=4, pi=3.1415926536, time=0.387389
+n of threads=8, pi=3.1415926536, time=0.205410
+n of threads=16, pi=3.1415926536, time=0.107726
+n of threads=20, pi=3.1415926536, time=0.210124
