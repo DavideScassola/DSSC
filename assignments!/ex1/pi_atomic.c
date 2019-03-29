@@ -7,19 +7,6 @@ double f(double x)
     return 1/(1+x*x);
 }
 
-double serial_pi(int N)
-{
-    double h = 1/N;
-    double almost_pi = 0;
-
-    for(int i=0; i<N; i++)
-    {
-        almost_pi+=h*f(h*(i+0.5));
-    }
-    
-    return almost_pi*4;
-}
-
 double parallel_pi(int N, int nthreads)
 {
     double h = 1./N;
@@ -29,9 +16,10 @@ double parallel_pi(int N, int nthreads)
     {
 
         double temp = 0;
-
+	
+	int i;
         # pragma omp for schedule(static)
-        for(int i=0; i<N; i++)
+        for(i=0; i<N; i++)
             temp+=h*f(h*(i+0.5));
 
         # pragma omp atomic

@@ -17,8 +17,9 @@ double parallel_pi(int N, int nthreads)
 
         double temp = 0;
 
+	int i;
         # pragma omp for schedule(static)
-        for(int i=0; i<N; i++)
+        for(i=0; i<N; i++)
             temp+=h*f(h*(i+0.5));
 
         # pragma omp critical

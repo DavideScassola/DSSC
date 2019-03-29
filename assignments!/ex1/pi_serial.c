@@ -12,10 +12,9 @@ double serial_pi(int N)
     double h = 1/N;
     double almost_pi = 0;
 
-    for(int i=0; i<N; i++)
-    {
+    int i;
+    for(i=0; i<N; i++)
         almost_pi+=h*f(h*(i+0.5));
-    }
     
     return almost_pi*4;
 }

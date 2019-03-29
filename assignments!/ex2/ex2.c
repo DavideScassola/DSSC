@@ -33,8 +33,9 @@ int main( int argc, char * argv[] )
         //nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
+	int i;
         # pragma omp for schedule(static)
-        for(int i = 0; i < N; ++i)
+        for(i = 0; i < N; ++i)
         {
             a[i] = thread_id;
         }
@@ -51,8 +52,9 @@ int main( int argc, char * argv[] )
         //nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
+	int i;
         # pragma omp for schedule(static,1)
-        for(int i = 0; i < N; ++i)
+        for(i = 0; i < N; ++i)
         {
             a[i] = thread_id;
         }
@@ -69,8 +71,9 @@ int main( int argc, char * argv[] )
         //nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
+	int i;
         # pragma omp for schedule(static,10)
-        for(int i = 0; i < N; ++i)
+        for(i = 0; i < N; ++i)
         {
             a[i] = thread_id;
         }
@@ -88,8 +91,9 @@ int main( int argc, char * argv[] )
         //nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
+	int i;
         # pragma omp for schedule(dynamic)
-        for(int i = 0; i < N; ++i)
+        for(i = 0; i < N; ++i)
         {
             a[i] = thread_id;
         }
@@ -107,8 +111,9 @@ int main( int argc, char * argv[] )
         nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
+	int i;
         # pragma omp for schedule(dynamic,1)
-        for(int i = 0; i < N; ++i)
+        for(i = 0; i < N; ++i)
         {
             a[i] = thread_id;
         }
@@ -127,8 +132,9 @@ int main( int argc, char * argv[] )
         nthreads = omp_get_num_threads();
         int thread_id = omp_get_thread_num();
 
+	int i;
         # pragma omp for schedule(dynamic,10)
-        for(int i = 0; i < N; ++i)
+        for(i = 0; i < N; ++i)
         {
             a[i] = thread_id;
         }
