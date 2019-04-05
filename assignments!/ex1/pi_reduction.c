@@ -30,7 +30,7 @@ double parallel_pi(int N, int nthreads)
 int main( int argc, char * argv[] )
 {
     const int N = (int) 1E8;
-    int nthreads = argc>=2 ? atoi(argv[1]) : 4;
+    int nthreads = argc>=2 ? atoi(argv[1]) : 4; // default case: 4 threads
 
     printf("n of threads=%d, ", nthreads);
     double start = omp_get_wtime();

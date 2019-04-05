@@ -22,7 +22,6 @@ double serial_pi(int N)
 int main( int argc, char * argv[] )
 {
     const int N = (int) 1E8;
-    int nthreads = argc>=2 ? atoi(argv[1]) : 4;
 
     double start = omp_get_wtime();
     double pi =  serial_pi(N);
