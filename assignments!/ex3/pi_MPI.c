@@ -53,8 +53,11 @@ int main( int argc, char * argv[] ){
 	//MPI_Comm_size( MPI_COMM_WORLD, &npes );
 
 //////// DO LOCAL SUM ////////////////
-float *rand_nums = NULL;
-rand_nums = create_rand_nums(num_elements_per_proc);
+num_elements_per_proc = 1000;
+float *rand_nums = (*float) malloc(sizeof(float)*num_elements_per_proc);
+int j;
+for(j=0;j<num_elements_per_proc;j++)
+	rand_nums[j] = j;
 
 // Sum the numbers locally
 float local_sum = 0;

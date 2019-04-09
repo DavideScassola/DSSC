@@ -52,7 +52,7 @@ int main( int argc, char * argv[] ){
   imesg = rank;
   fprintf( stderr, "\nBefore Bcast operation I am process %d of %d MPI processes and my message content is: %d\n", rank, npes, imesg );
 
-  MPI_Bcast( &imesg, 1, MPI_INT, 0, MPI_COMM_WORLD );
+  MPI_Bcast( &imesg, 1, MPI_INT, 2, MPI_COMM_WORLD );
 
   fprintf( stderr, "\nAfter Bcast operation I am process %d of %d MPI processes and my message content is: %d\n", rank, npes, imesg );
 
