@@ -1,0 +1,11 @@
+If you want to generate the executables you have to load:
+- intel compiler module
+- mpi module
+then you can compile through the Makefile (make all).
+
+pi_MPI.x takes as parameter the number of iterations used to compute pi.
+ex: mpirun -np 10 pi_MPI.x 1000000000
+
+pi_OMP.x instead takes as parameter just the number of threads,
+and the number of iterations is fixed to 10^9.
+ex: pi_OMP.x 10

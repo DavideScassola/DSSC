@@ -1,41 +1,5 @@
-/*
- *
- * This code implements the first broadcast operation using the paradigm of message passing (MPI) 
- *
- * The broadcast operation is of kind 1:n where thre process root send a set of data to all other processes.
- * 
- * MPI_BCAST( buffer, count, datatype, root, comm )
- * [ INOUT buffer] starting address of buffer (choice)
- * [ IN count] number of entries in buffer (integer)
- * [ IN datatype] data type of buffer (handle)
- * [ IN root] rank of broadcast root (integer)
- * [ IN comm] communicator (handle)
- *
- * int MPI_Bcast(void* buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm )
- *
- * MPI_BCAST broadcasts a message from the process with rank root to all processes of the group, 
- * itself included. It is called by all members of group using the same arguments for comm, root. 
- * On return, the contents of root's communication buffer has been copied to all processes.
- *
- * The type signature of count, datatype on any process must be equal to the type signature of count, 
- * datatype at the root. This implies that the amount of data sent must be equal to the amount received, 
- * pairwise between each process and the root. 
- *
- * Detailed documentation of the MPI APis here:
- * https://www.mpi-forum.org/docs/mpi-1.1/mpi-11-html/node182.html
- *
- * Compile with: 
- * $mpicc bcast.c
- * 
- * Run with:
- * $mpirun -np 4 ./a.out
- *
- */
-
 #include <stdlib.h>
 #include <stdio.h>
-
-// Header file for compiling code including MPI APIs
 #include <mpi.h>
 
 double f(double x)
@@ -45,43 +9,58 @@ double f(double x)
 
 int main( int argc, char * argv[] ){
 
-	//int rank; // store the MPI identifier of the process
-	//int npes; // store the number of MPI processes
-
+	int rank; // identifier of the process
+	int total_np; // total number of MPI processes
+	
+	size_t N = argc<2 ? 10000000 : atoi(argv[1]); // default is 10^7
+       
+	double t1, t2;
+		
 	MPI_Init( &argc, &argv );
-	//MPI_Comm_rank( MPI_COMM_WORLD, &rank );
-	//MPI_Comm_size( MPI_COMM_WORLD, &npes );
+	MPI_Comm_rank( MPI_COMM_WORLD, &rank );
+	MPI_Comm_size( MPI_COMM_WORLD, &total_np );
 
-//////// DO LOCAL SUM ////////////////
-float *rand_nums = NULL;
-rand_nums = create_rand_nums(num_elements_per_proc);
+        int reducer_proc = total_np-1; // the processor that will reduce (sum) the partial results
+        int print_proc = 0 ; // the processor that will receive and print the final result 
+                
+	
+	t1 = MPI_Wtime();
+	// Local computation 
+	double h = 1./N;
+	int i;
+	int chunk = N/total_np;
+	int start = chunk*rank;
+	int end = start + chunk;
+	double temp;
 
-// Sum the numbers locally
-float local_sum = 0;
-int i;
-for (i = 0; i < num_elements_per_proc; i++) {
-  local_sum += rand_nums[i];
-}
-//////// DO LOCAL SUM ////////////////
+	if(rank!=total_np-1)
+		for(i=(chunk*rank);i<chunk*(rank+1);i++)
+			temp+=h*f(h*(i+0.5));
+	else
+		for(i=(chunk*rank);i<N;i++)
+	                temp+=h*f(h*(i+0.5));
+	
+	
+	// computing the global sum
+	double global_sum;
+	MPI_Reduce(&temp, &global_sum, 1, MPI_DOUBLE, MPI_SUM, reducer_proc, MPI_COMM_WORLD);
+	global_sum*=4;
+	t2 = MPI_Wtime();
+	
+	// send the result to the printer processor
+	if(rank==reducer_proc && print_proc!=reducer_proc)
+		MPI_Send(&global_sum, 1, MPI_DOUBLE, print_proc, 101, MPI_COMM_WORLD);
+	
+	// receive and print the final result
+	if(rank==print_proc)
+	{
+		if(print_proc!=reducer_proc)
+			MPI_Recv(&global_sum, 1, MPI_DOUBLE, reducer_proc, 101, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		
+		printf("pi = %.10f, elapsed_time:%f\n", global_sum, t2-t1);
+	}
+	
+	MPI_Finalize();
 
-
-// Print  info
-printf("Local sum for process %d - %f, avg = %f\n",
-       world_rank, local_sum, local_sum / num_elements_per_proc);
-
-// Reduce all of the local sums into the global sum
-float global_sum;
-MPI_Reduce(&local_sum, &global_sum, 1, MPI_FLOAT, MPI_SUM, 0,
-           MPI_COMM_WORLD);
-
-// Print the result
-if (world_rank == 0) {
-  printf("Total sum = %f, avg = %f\n", global_sum,
-         global_sum / (world_size * num_elements_per_proc));
-}
-
-  MPI_Finalize();
-  
-  return 0;
-
+	return 0;
 }
