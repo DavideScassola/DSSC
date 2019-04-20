@@ -8,7 +8,7 @@ void pm(double* m, size_t n)
     for(i=0; i<n; i++)
     {
         for(j=0; j<n; j++)
-            printf("%.1f ", m[i*n+j]);
+            printf("%.0f ", m[i*n+j]);
         printf("\n");
     }
 }
@@ -98,34 +98,52 @@ int main(int argc, char* argv[])
         }
         else
         {
+            MPI_Request request;
+            MPI_Status status;
             FILE* data_file;
             data_file=fopen("ex4_data.dat","wb");
 
             size_t max_chunk_size = (size/np + 1);
-            double* buffer = (double*) malloc(sizeof(double)*max_chunk_size);
+            double* buffer1 = partial_matrix;
+            double* buffer2 = (double*) malloc(sizeof(double)*max_chunk_size);
             int i;
-            size_t current_size, partial_size = size/np;
+            double* receiving_buffer;
+            double* writing_buffer;
+            size_t receiving_current_size, writing_current_size, partial_size = size/np;
 
-            for(i = 0; i<np; i++)
+            writing_current_size = partial_size + (0<rest);
+            receiving_current_size = partial_size + (1<rest);
+
+            receiving_buffer = buffer2;
+            MPI_Irecv(receiving_buffer, receiving_current_size, MPI_DOUBLE, 1, 101, MPI_COMM_WORLD, &request);
+            fwrite(partial_matrix, sizeof(double), writing_current_size, data_file);
+            MPI_Wait(&request, &status);
+
+            for(i = 1; i<np-1; i++)
             {
-                current_size = partial_size + (i<rest);
+                receiving_current_size = partial_size + (i+1<rest);
+                writing_current_size = partial_size + (i<rest);
 
-                if(i==root)
-                {
-                    //write root partial matrix
-                    fwrite(partial_matrix, sizeof(double), current_size, data_file);
-                }
-                else
-                {
-                    MPI_Recv(buffer, current_size, MPI_DOUBLE, i, 101, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-                    //printf("ricevuto il messaggio di:%d, current_size=%ld\n", i, current_size);
-                    fwrite(buffer, sizeof(double), current_size, data_file);
-                    //printf("scrittura compleata(%d)\n", i);
-                }
+                receiving_buffer = (i%2 == 1) ? buffer1 : buffer2;
+                writing_buffer = (i%2 == 1) ? buffer2 : buffer1;
+
+                MPI_Irecv(receiving_buffer, receiving_current_size, MPI_DOUBLE, i+1, 101, MPI_COMM_WORLD, &request);
+                fwrite(writing_buffer, sizeof(double), writing_current_size, data_file);
+                MPI_Wait(&request, &status);
+
+                //MPI_Irecv(buffer, current_size, MPI_DOUBLE, 1, 101, MPI_COMM_WORLD, &request);
+                //fwrite(buffer, sizeof(double), current_size, data_file);
+                //printf("ricevuto il messaggio di:%d, current_size=%ld\n", i, current_size);
+                
+                //printf("scrittura completata(%d)\n", i);
+
                 //fseek(data_file, 0, SEEK_CUR);
                 //printf("testina avanti di %ld double \n", (current_size-N*N/total_np));
             }
-            free(buffer);
+            writing_current_size = partial_size + (np-1<rest);
+            fwrite(receiving_buffer, sizeof(double), writing_current_size, data_file);
+
+            free(buffer2);
             fclose(data_file);
 
             // verify correctness
