@@ -1,0 +1,10 @@
+If you want to generate the executables you have to load:
+- intel compiler module
+- mpi module
+then you can compile through the Makefile (make all).
+
+overlapping.x takes as parameter the dimension of the identity matrix to generate (default is 9).
+ex: mpirun -np 10 overlapping.x 120
+
+If the input size is bigger than 9, then the identity matrix will be written on a binary file.
+Anyway, in both cases the program prints the matrix in order to check the correctness.

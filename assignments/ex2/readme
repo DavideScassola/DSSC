@@ -1,0 +1,7 @@
+If you want to generate the executables you have to load:
+- openmp module
+then you can compile through the Makefile (make all).
+
+see_threads.x takes as parameter the number of threads you want to instantiate (default is 4).
+ex: ./see_threads 10
+

@@ -1,0 +1,7 @@
+If you want to generate the executables you have to load:
+- openmp module
+then you can compile through the Makefile (make all).
+
+all the executables (except pi_serial.x) take as parameter the number of threads you want to instantiate (default is 4).
+ex: ./pi_reduction.x 10
+
