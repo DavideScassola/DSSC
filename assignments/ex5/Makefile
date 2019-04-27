@@ -2,9 +2,12 @@ OPT = -O3
 CC = gcc
 MPICC = mpicc
 
-all: ring.x
+all: ring_overlapping.x ring_sequential.x
 	
-ring.x : ex5.c
+ring_overlapping.x : ex5_overlapping.c
+	$(MPICC) $(OPT) $^ -o $@
+
+ring_sequential.x : ex5_sequential.c
 	$(MPICC) $(OPT) $^ -o $@
 	
 clean:

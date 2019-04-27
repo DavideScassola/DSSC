@@ -54,12 +54,13 @@ int main(int argc, char* argv[])
     t1 = MPI_Wtime();
     for(i=0; i<np-1; i++)
     {
-        printf("%d start sending %d\n", rank, X[0]);
-        MPI_Send(X, N, MPI_INT, (rank+1)%np,    101, MPI_COMM_WORLD);
-        printf("%d sent %d (ready to receive)\n", rank, X[0]);
         MPI_Recv(X, N, MPI_INT, (rank-1+np)%np, 101, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        printf("%d received %d\n", rank, X[0]);
-        vector_sum(sum, X, N);
+	vector_sum(sum, X, N);
+        //printf("%d start sending %d\n", rank, X[0]);
+        MPI_Send(X, N, MPI_INT, (rank+1)%np,    101, MPI_COMM_WORLD);
+        //printf("%d sent %d (ready to receive)\n", rank, X[0]);
+        //printf("%d received %d\n", rank, X[0]);
+        
     }
     // printf("I'm %d and my sum is ", rank);
     //print_vector(sum, N);

@@ -1,0 +1,7 @@
+If you want to generate the executables you have to load:
+- mpi module
+then you can compile through the Makefile (make all).
+
+The executables take as parameter the dimension of the vector to send (default is 1011).
+ex: mpirun -np 10 ring_overlapping.x 120
+
