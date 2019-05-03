@@ -32,6 +32,13 @@ short int is_on_diagonal(size_t i, size_t dim)
     return i%dim == i/dim;
 }
 
+void swapBuffers(double** a, double** b)
+{
+    double* t = *a;
+    *a = *b;
+    *b = t;
+}
+
 int main(int argc, char* argv[])
 {
     
@@ -146,9 +153,7 @@ int main(int argc, char* argv[])
                 receiving_current_size = partial_size + (i+1<rest);
                 writing_current_size = partial_size + (i<rest);
 
-                // With this trick I swap the two buffers roles at each iteration 
-                receiving_buffer = (i%2 == 1) ? buffer1 : buffer2;
-                writing_buffer = (i%2 == 1) ? buffer2 : buffer1;
+		swapBuffers(&receiving_buffer, &writing_buffer);
 
                 MPI_Irecv(receiving_buffer, receiving_current_size, MPI_DOUBLE, i+1, 101, MPI_COMM_WORLD, &request);
                 fwrite(writing_buffer, sizeof(double), writing_current_size, data_file);
