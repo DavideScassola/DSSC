@@ -1,6 +1,5 @@
 OPT = -O3
-CC = gcc
-MPICC = mpicc
+MPICC = mpiicc
 
 all: ring_overlapping.x ring_sequential.x
 	
