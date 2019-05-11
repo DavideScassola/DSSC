@@ -1,0 +1,9 @@
+module load cudatoolkit/10.0 
+
+qsub -q reserved2 -l walltime=10:00:00,nodes=1:ppn=20 -I
+
+nvidia-smi
+
+nvcc -c add_simple.cu
+nvcc -o  add_simple.x add_simple.cu
+./add_simple.x
