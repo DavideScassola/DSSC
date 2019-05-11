@@ -7,7 +7,7 @@
 
 __global__ void transpose(int * in, int * out, int size)
 {
-    int temp_side = THREAD_PER_BLOCK;
+    //int temp_side = THREAD_PER_BLOCK;
     __shared__ int temp_matrix[THREAD_PER_BLOCK_SIDE][THREAD_PER_BLOCK_SIDE];
 
     //int temp_i = threadIdx.y*temp_side + threadIdx.x;
@@ -18,7 +18,7 @@ __global__ void transpose(int * in, int * out, int size)
     // copy submatrix (transposed) in shared memory
     temp_matrix[threadIdx.x][threadIdx.y] = in[global_i_t];
 
-    //__syncthreads();
+    __syncthreads();
 
     // copy submatrix in main memory
     out[global_i] = temp_matrix[threadIdx.y][threadIdx.x];
@@ -92,6 +92,7 @@ int main()
     // correctness test
     printf("\ncorrecteness: %d \n", correct(d_in, d_out, size));
    
+
     //showing Bandwidth
     cudaEventSynchronize(stop);
     float milliseconds = 0;
