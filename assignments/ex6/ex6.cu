@@ -8,23 +8,29 @@
 __global__ void transpose(int * in, int * out, int size)
 {
     int temp_side = THREAD_PER_BLOCK;
-    __shared__ int temp_matrix1[THREAD_PER_BLOCK];
-    __shared__ int temp_matrix2[THREAD_PER_BLOCK];
+    __shared__ int temp_matrix[THREAD_PER_BLOCK_SIDE][THREAD_PER_BLOCK_SIDE];
 
-    int temp_i = threadIdx.y*temp_side + threadIdx.x;
-    int temp_i_t = threadIdx.x*temp_side + threadIdx.y;
+    //int temp_i = threadIdx.y*temp_side + threadIdx.x;
+    //int temp_i_t = threadIdx.x*temp_side + threadIdx.y;
     int global_i = blockIdx.y*blockDim.y*size + blockIdx.x*blockDim.x + threadIdx.y*size + threadIdx.x;
     int global_i_t = blockIdx.x*blockDim.y*size + blockIdx.y*blockDim.x + threadIdx.y*size + threadIdx.x;
 
-    // copy submatrix in shared memory
-    temp_matrix1[temp_i] = in[global_i_t];
+    // copy submatrix (transposed) in shared memory
+    temp_matrix[threadIdx.x][threadIdx.y] = in[global_i_t];
 
-    // transpose submatrix in shared memory
-    temp_matrix2[temp_i] = temp_matrix1[temp_i_t];
+    //__syncthreads();
 
     // copy submatrix in main memory
-    out[global_i] = temp_matrix2[temp_i];
+    out[global_i] = temp_matrix[threadIdx.y][threadIdx.x];
 
+}
+
+int correct(int* a, int* b, int size)
+{   
+    int i;
+    for(i=0; i<size; i++)
+        if(a[i]!=b[(i%size)*size + i/size]) return 0;
+    return 1;
 }
 
 int main()
@@ -83,6 +89,9 @@ int main()
     cudaFree(d_out);
 
 
+    // correctness test
+    printf("\ncorrecteness: %d \n", correct(d_in, d_out, size));
+   
     //showing Bandwidth
     cudaEventSynchronize(stop);
     float milliseconds = 0;
