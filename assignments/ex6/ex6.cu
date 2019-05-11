@@ -3,12 +3,13 @@
 
 #define N 8192
 #define THREAD_PER_BLOCK_SIDE 32
+#define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE*THREAD_PER_BLOCK_SIDE
 
 __global__ void transpose(int * in, int * out, int size)
 {
-    int temp_side = blockDim.x;
-    __shared__ int temp_matrix1[temp_side*temp_side];
-    __shared__ int temp_matrix2[temp_side*temp_side];
+    int temp_side = THREAD_PER_BLOCK;
+    __shared__ int temp_matrix1[THREAD_PER_BLOCK];
+    __shared__ int temp_matrix2[THREAD_PER_BLOCK];
 
     int temp_i = threadIdx.y*temp_side + threadIdx.x;
     int temp_i_t = threadIdx.x*temp_side + threadIdx.y;
