@@ -99,7 +99,7 @@ int main()
     cudaEventElapsedTime(&milliseconds, start, stop);
 
     printf("\nmilliseconds: %f", milliseconds);
-    printf("\nBandwidth: %fGB/s \n", size_in_memory/milliseconds/1e6);
+    printf("\nBandwidth: %f GB/s \n", size_in_memory/milliseconds/1e6);
 
 
     return 0;
