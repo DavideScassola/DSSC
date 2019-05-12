@@ -25,11 +25,11 @@ __global__ void transpose(int * in, int * out, int size)
 
 }
 
-int correct(int* a, int* b, int size)
+int correct(int* a, int* b, int side)
 {   
     int i;
-    for(i=0; i<size; i++)
-        if(a[i]!=b[(i%size)*size + i/size]) return 0;
+    for(i=0; i<side*side; i++)
+        if(a[i]!=b[(i%side)*side + i/side]) return 0;
     return 1;
 }
 
@@ -82,16 +82,16 @@ int main()
     cudaMemcpy(h_out, d_out, size_in_memory, cudaMemcpyDeviceToHost);
 
 
+    // correctness test
+    printf("\ncorrecteness: %d \n", correct(h_in, h_out, N));
+   
+
     //free memory   
     free(h_in);
     free(h_out);
     cudaFree(d_in);
     cudaFree(d_out);
 
-
-    // correctness test
-    printf("\ncorrecteness: %d \n", correct(d_in, d_out, size));
-   
 
     //showing Bandwidth
     cudaEventSynchronize(stop);
