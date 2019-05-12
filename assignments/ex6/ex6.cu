@@ -98,7 +98,8 @@ int main()
     float milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
 
-    printf("\nEffective Bandwidth (GB/s): %f \n", size_in_memory/milliseconds/1e6);
+    printf("\nmilliseconds: %f", milliseconds);
+    printf("\nBandwidth: %fGB/s \n", size_in_memory/milliseconds/1e6);
 
 
     return 0;
