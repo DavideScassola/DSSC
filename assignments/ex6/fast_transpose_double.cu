@@ -98,7 +98,7 @@ int main()
     float milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
 
-    printf("\nmatrix type: %s", TYPE_STRING);
+    printf("\nmatrix type: %s", TYPE_S);
     printf("\nblock: %d x %d", block.y, block.x);
     printf("\nmilliseconds: %f", milliseconds);
     printf("\nBandwidth: %f GB/s \n", 2*size_in_memory/milliseconds/1e6);
