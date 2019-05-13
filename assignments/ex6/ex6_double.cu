@@ -6,7 +6,7 @@
 #define THREAD_PER_BLOCK_SIDE_Y 32
 #define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE_X*THREAD_PER_BLOCK_SIDE_Y
 
-__global__ void transpose(int * in, int * out, int size)
+__global__ void transpose(double * in, double * out, int size)
 {
     //int temp_side = THREAD_PER_BLOCK;
     __shared__ int temp_matrix[THREAD_PER_BLOCK_SIDE_X][THREAD_PER_BLOCK_SIDE_Y];
@@ -24,7 +24,7 @@ __global__ void transpose(int * in, int * out, int size)
 
 }
 
-int correct(int* a, int* b, int side)
+int correct(double* a, double* b, int side)
 {   
     int i;
     for(i=0; i<side*side; i++)
@@ -35,8 +35,8 @@ int correct(int* a, int* b, int side)
 int main()
 {
 
-    int * h_in, * h_out;
-    int * d_in, * d_out;
+    double * h_in, * h_out;
+    double * d_in, * d_out;
     int size = N*N;
     int size_in_memory = size * sizeof(int);
     int i;
@@ -49,8 +49,8 @@ int main()
 
 
     //allocate memory in host and device
-    h_in = (int *)malloc(size_in_memory);
-    h_out = (int *)malloc(size_in_memory);
+    h_in = (double *)malloc(size_in_memory);
+    h_out = (double *)malloc(size_in_memory);
 
     cudaMalloc((void**)&d_in, size_in_memory);
     cudaMalloc((void**)&d_out, size_in_memory);
