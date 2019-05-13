@@ -2,14 +2,13 @@
 #include <math.h>
 
 #define N 8192
-#define THREAD_PER_BLOCK_SIDE_X 32
-#define THREAD_PER_BLOCK_SIDE_Y 32
-#define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE_X*THREAD_PER_BLOCK_SIDE_Y
+#define THREAD_PER_BLOCK_SIDE 32
+#define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE*THREAD_PER_BLOCK_SIDE
 
 __global__ void transpose(int * in, int * out, int size)
 {
     //int temp_side = THREAD_PER_BLOCK;
-    __shared__ int temp_matrix[THREAD_PER_BLOCK_SIDE_Y][THREAD_PER_BLOCK_SIDE_X];
+    __shared__ int temp_matrix[THREAD_PER_BLOCK_SIDE][THREAD_PER_BLOCK_SIDE];
 
     //int temp_i = threadIdx.y*temp_side + threadIdx.x;
     //int temp_i_t = threadIdx.x*temp_side + threadIdx.y;
@@ -69,8 +68,8 @@ int main()
 
     //transpose matrix in device
     dim3 grid, block;
-    block.x = THREAD_PER_BLOCK_SIDE_X;
-    block.y = THREAD_PER_BLOCK_SIDE_Y;
+    block.x = THREAD_PER_BLOCK_SIDE;
+    block.y = THREAD_PER_BLOCK_SIDE;
     grid.x = N / block.x;
     grid.y = N / block.y;
 
