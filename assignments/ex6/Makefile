@@ -1,10 +1,14 @@
-OPT = -O3
+OPT = -O4
 CC = nvcc
 
-all: fast_transpose.x
+all: fast_transpose_int.x fast_transpose_double.x
 	
-fast_transpose.x : ex6.cu
+fast_transpose_int.x : fast_transpose_int.cu
 	$(CC) $(OPT) $^ -o $@
+
+fast_transpose_double.x : fast_transpose_double.cu
+	$(CC) $(OPT) $^ -o $@
+
 	
 clean:
 	@rm -r *.x

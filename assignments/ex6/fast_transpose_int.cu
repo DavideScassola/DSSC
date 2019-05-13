@@ -1,15 +1,16 @@
 #include <stdio.h>
-#include <math.h>
 
 #define N 8192
 #define THREAD_PER_BLOCK_SIDE_X 32
 #define THREAD_PER_BLOCK_SIDE_Y 32
 #define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE_X*THREAD_PER_BLOCK_SIDE_Y
+#define TYPE int
+#define TYPE_S "int"
 
-__global__ void transpose(int * in, int * out, int size)
+__global__ void transpose(TYPE * in, TYPE * out, int size)
 {
     //int temp_side = THREAD_PER_BLOCK;
-    __shared__ int temp_matrix[THREAD_PER_BLOCK_SIDE_X][THREAD_PER_BLOCK_SIDE_Y];
+    __shared__ TYPE temp_matrix[THREAD_PER_BLOCK_SIDE_X][THREAD_PER_BLOCK_SIDE_Y];
 
     int col = blockIdx.x*blockDim.x + threadIdx.x;
     int row = blockIdx.y*blockDim.y + threadIdx.y;
@@ -24,7 +25,7 @@ __global__ void transpose(int * in, int * out, int size)
 
 }
 
-int correct(int* a, int* b, int side)
+int correct(TYPE* a, TYPE* b, int side)
 {   
     int i;
     for(i=0; i<side*side; i++)
@@ -35,10 +36,10 @@ int correct(int* a, int* b, int side)
 int main()
 {
 
-    int * h_in, * h_out;
-    int * d_in, * d_out;
+    TYPE * h_in, * h_out;
+    TYPE * d_in, * d_out;
     int size = N*N;
-    int size_in_memory = size * sizeof(int);
+    int size_in_memory = size * sizeof(TYPE);
     int i;
 
 
@@ -49,8 +50,8 @@ int main()
 
 
     //allocate memory in host and device
-    h_in = (int *)malloc(size_in_memory);
-    h_out = (int *)malloc(size_in_memory);
+    h_in = (TYPE *)malloc(size_in_memory);
+    h_out = (TYPE *)malloc(size_in_memory);
 
     cudaMalloc((void**)&d_in, size_in_memory);
     cudaMalloc((void**)&d_out, size_in_memory);
@@ -97,6 +98,7 @@ int main()
     float milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
 
+    printf("\nmatrix type: %s", TYPE_S);
     printf("\nblock: %d x %d", block.y, block.x);
     printf("\nmilliseconds: %f", milliseconds);
     printf("\nBandwidth: %f GB/s \n", 2*size_in_memory/milliseconds/1e6);

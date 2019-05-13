@@ -1,31 +1,31 @@
 #include <stdio.h>
-#include <math.h>
 
 #define N 8192
-#define THREAD_PER_BLOCK_SIDE 32
-#define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE*THREAD_PER_BLOCK_SIDE
+#define THREAD_PER_BLOCK_SIDE_X 32
+#define THREAD_PER_BLOCK_SIDE_Y 32
+#define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE_X*THREAD_PER_BLOCK_SIDE_Y
+#define TYPE double
+#define TYPE_S "double"
 
-__global__ void transpose(int * in, int * out, int size)
+__global__ void transpose(TYPE * in, TYPE * out, int size)
 {
     //int temp_side = THREAD_PER_BLOCK;
-    __shared__ int temp_matrix[THREAD_PER_BLOCK_SIDE][THREAD_PER_BLOCK_SIDE];
+    __shared__ TYPE temp_matrix[THREAD_PER_BLOCK_SIDE_X][THREAD_PER_BLOCK_SIDE_Y];
 
-    //int temp_i = threadIdx.y*temp_side + threadIdx.x;
-    //int temp_i_t = threadIdx.x*temp_side + threadIdx.y;
-    int global_i = blockIdx.y*blockDim.y*size + blockIdx.x*blockDim.x + threadIdx.y*size + threadIdx.x;
-    int global_i_t = blockIdx.x*blockDim.y*size + blockIdx.y*blockDim.x + threadIdx.y*size + threadIdx.x;
+    int col = blockIdx.x*blockDim.x + threadIdx.x;
+    int row = blockIdx.y*blockDim.y + threadIdx.y;
 
     // copy submatrix (transposed) in shared memory
-    temp_matrix[threadIdx.x][threadIdx.y] = in[global_i_t];
+    temp_matrix[threadIdx.x][threadIdx.y] = in[row*size + col];
 
     __syncthreads();
 
     // copy submatrix in main memory
-    out[global_i] = temp_matrix[threadIdx.y][threadIdx.x];
+    out[col*size + row] = temp_matrix[threadIdx.x][threadIdx.y];
 
 }
 
-int correct(int* a, int* b, int side)
+int correct(TYPE* a, TYPE* b, int side)
 {   
     int i;
     for(i=0; i<side*side; i++)
@@ -36,10 +36,10 @@ int correct(int* a, int* b, int side)
 int main()
 {
 
-    int * h_in, * h_out;
-    int * d_in, * d_out;
+    TYPE * h_in, * h_out;
+    TYPE * d_in, * d_out;
     int size = N*N;
-    int size_in_memory = size * sizeof(int);
+    int size_in_memory = size * sizeof(TYPE);
     int i;
 
 
@@ -50,8 +50,8 @@ int main()
 
 
     //allocate memory in host and device
-    h_in = (int *)malloc(size_in_memory);
-    h_out = (int *)malloc(size_in_memory);
+    h_in = (TYPE *)malloc(size_in_memory);
+    h_out = (TYPE *)malloc(size_in_memory);
 
     cudaMalloc((void**)&d_in, size_in_memory);
     cudaMalloc((void**)&d_out, size_in_memory);
@@ -68,8 +68,8 @@ int main()
 
     //transpose matrix in device
     dim3 grid, block;
-    block.x = THREAD_PER_BLOCK_SIDE;
-    block.y = THREAD_PER_BLOCK_SIDE;
+    block.x = THREAD_PER_BLOCK_SIDE_X;
+    block.y = THREAD_PER_BLOCK_SIDE_Y;
     grid.x = N / block.x;
     grid.y = N / block.y;
 
@@ -98,8 +98,10 @@ int main()
     float milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
 
+    printf("\nmatrix type: %s", TYPE_STRING);
+    printf("\nblock: %d x %d", block.y, block.x);
     printf("\nmilliseconds: %f", milliseconds);
-    printf("\nBandwidth: %f GB/s \n", size_in_memory/milliseconds/1e6);
+    printf("\nBandwidth: %f GB/s \n", 2*size_in_memory/milliseconds/1e6);
 
 
     return 0;
