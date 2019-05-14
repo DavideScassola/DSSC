@@ -8,6 +8,7 @@ then you can compile through the Makefile (make all).
 - fast_transpose_double_1024.x: transposes a double matrix (block = 32 x 32).
 - fast_transpose_double_best.x: transposes a double matrix (block = 16 x 8).
 - fast_transpose_int.x: transposes a int matrix (block = 16 x 8).
+- naive_transpose_double.x: transposes in a naive way a double matrix (block dimensions are passed as arguments) ex: ./naive_transpose_double.x 16 8 (first is y, second is x)
 
 - fast_transpose_double_bandwidth.txt: collection of results (bandwidth) of a transposition of a 8192 x 8192 matrix of doubles for different block dimensions.
 
