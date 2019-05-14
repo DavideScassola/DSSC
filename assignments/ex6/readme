@@ -3,3 +3,12 @@ If you want to generate the executables you have to load:
 then you can compile through the Makefile (make all).
 
 
+- fast_transpose_double_64.x: transposes a double matrix (block = 8 x 8).
+- fast_transpose_double_512.x: transposes a double matrix (block = 32 x 16).
+- fast_transpose_double_1024.x: transposes a double matrix (block = 32 x 32).
+- fast_transpose_double_best.x: transposes a double matrix (block = 16 x 8).
+- fast_transpose_int.x: transposes a int matrix (block = 16 x 8).
+
+- fast_transpose_double_bandwidth.txt: collection of results (bandwidth) of a transposition of a 8192 x 8192 matrix of doubles for different block dimensions.
+
+- fast_transpose_int_bandwidth.txt: collection of results (bandwidth) of a transposition of a 8192 x 8192 matrix of int for different block dimensions.

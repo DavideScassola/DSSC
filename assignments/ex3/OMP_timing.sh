@@ -1,4 +1,4 @@
-cd /home/dscassol/parallel_programming/DSSC/assignments!/ex3/
+cd /home/dscassol/parallel_programming/DSSC/assignments/ex3/
 
 module load openmpi/1.8.3/intel/14.0
 PROGRAM=./pi_OMP.x

@@ -1,0 +1,32 @@
+INT MATRIX 8192 x 8192
+
+matrix type: int
+block: 8 x 16
+milliseconds: 11.411968
+Bandwidth: 47.044552 GB/s 
+
+matrix type: int
+block: 16 x 8
+milliseconds: 6.926912
+Bandwidth: 77.505088 GB/s 
+
+matrix type: int
+block: 8 x 32
+milliseconds: 11.333696
+Bandwidth: 47.369444 GB/s
+
+matrix type: int
+block: 32 x 16
+milliseconds: 10.716960
+Bandwidth: 50.095448 GB/s
+
+matrix type: int
+block: 16 x 32
+milliseconds: 13.442944
+Bandwidth: 39.937004 GB/s 
+
+matrix type: int
+block: 32 x 32
+milliseconds: 17.709345
+Bandwidth: 30.315684 GB/s
+

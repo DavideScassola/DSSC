@@ -1,4 +1,4 @@
-cd /home/dscassol/parallel_programming/DSSC/assignments!/ex3/
+cd /home/dscassol/parallel_programming/DSSC/assignments/ex3/
 module load impi-trial/5.0.1.035
 PROGRAM=./pi_MPI.x
 N=1000000000;

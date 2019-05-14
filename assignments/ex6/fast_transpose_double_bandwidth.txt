@@ -1,0 +1,80 @@
+FAST TRANSPOSE OF A 8192 x 8192 MATRIX OF DOUBLES
+Here there are some examples of performances for different block dimensions
+
+-------------------------------------------
+THREADS PER BLOCK: 64
+-------------------------------------------
+matrix type: double
+block: 8 x 8
+milliseconds: 11.617376
+Bandwidth: 92.425504 GB/s
+ 
+matrix type: double
+block: 16 x 4
+milliseconds: 11.228224
+Bandwidth: 95.628824 GB/s
+-------------------------------------------
+
+
+
+-------------------------------------------
+THREADS PER BLOCK: 128
+-------------------------------------------
+matrix type: double
+block: 16 x 8
+milliseconds: 10.157344
+Bandwidth: 105.710888 GB/s
+
+matrix type: double
+block: 8 x 16
+milliseconds: 14.955712
+Bandwidth: 71.794760 GB/s
+-------------------------------------------
+
+
+
+-------------------------------------------
+THREADS PER BLOCK: 256
+-------------------------------------------
+matrix type: double
+block: 16 x 16
+milliseconds: 10.744416
+Bandwidth: 99.934872 GB/s
+
+matrix type: double
+block: 32 x 8
+milliseconds: 11.940608
+Bandwidth: 89.923544 GB/s
+-------------------------------------------
+
+
+
+-------------------------------------------
+THREADS PER BLOCK: 512
+-------------------------------------------
+matrix type: double
+block: 32 x 16
+milliseconds: 14.003968
+Bandwidth: 76.674112 GB/s
+
+matrix type: double
+block: 16 x 32
+milliseconds: 17.511265
+Bandwidth: 61.317204 GB/s  
+-------------------------------------------
+
+
+
+-------------------------------------------
+THREADS PER BLOCK: 1024
+-------------------------------------------
+matrix type: double
+block: 32 x 32
+milliseconds: 26.099487
+Bandwidth: 41.140340 GB/s
+
+matrix type: double
+block: 16 x 64
+milliseconds: 18.659424
+Bandwidth: 57.544212 GB/s
+-------------------------------------------
