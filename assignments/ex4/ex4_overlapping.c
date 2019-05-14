@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<mpi.h>
-#define FILE_NAME
+#define FILE_NAME "ex4_data.dat"
 
 void print_matrix(double* m, size_t n)
 {
