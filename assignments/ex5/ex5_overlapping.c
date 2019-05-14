@@ -48,8 +48,8 @@ int main(int argc, char* argv[])
     double t1, t2;
     size_t N = argc<2 ? 1011 : atoi(argv[1]); // default is 1011
     int i;
-    int* Xr = malloc(sizeof(int)*N);
-    int* Xs = malloc(sizeof(int)*N);
+    int* Xr = malloc(sizeof(int)*N); // buffer for receiving the message
+    int* Xs = malloc(sizeof(int)*N); // buffer for sending the message
     fill_vector(Xs, rank, N);
     int* sum = malloc(sizeof(int)*N);
     fill_vector(sum, 0, N);
