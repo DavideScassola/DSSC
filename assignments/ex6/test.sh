@@ -22,5 +22,9 @@ printf "\n\n\n" >> results.txt
 echo "./fast_transpose_double_best.x">> results.txt
 ./fast_transpose_double_best.x >> results.txt
 
+printf "\n\n\n" >> results.txt
+echo "./naive_transpose_double.x">> results.txt
+./naive_transpose_double.x >> results.txt
+
 rm test.sh.*
 exit

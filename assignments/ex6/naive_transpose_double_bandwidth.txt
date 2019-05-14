@@ -1,0 +1,31 @@
+NAIVE TRANSPOSE OF A 8192 x 8192 MATRIX OF DOUBLES
+Here there are some examples of performances for different block dimensions
+
+matrix type: double
+block: 8 x 8
+milliseconds: 15.667776
+Bandwidth: 68.531856 GB/s 
+
+
+matrix type: double
+block: 16 x 8
+milliseconds: 15.491264
+Bandwidth: 69.312728 GB/s 
+ 
+
+matrix type: double
+block: 16 x 16
+milliseconds: 18.068192
+Bandwidth: 59.427188 GB/s 
+ 
+
+matrix type: double
+block: 32 x 16
+milliseconds: 16.782080
+Bandwidth: 63.981452 GB/s 
+
+ 
+matrix type: double
+block: 32 x 32
+milliseconds: 14.626752
+Bandwidth: 73.409448 GB/s
