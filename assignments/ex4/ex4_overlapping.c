@@ -1,8 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<mpi.h>
+#define FILE_NAME
 
-void pm(double* m, size_t n)
+void print_matrix(double* m, size_t n)
 {
     size_t i, j;
     for(i=0; i<n; i++)
@@ -104,7 +105,7 @@ int main(int argc, char* argv[])
 
                 starting_point+=current_size;
             }
-            pm(m,N); // showing the complete matrix
+            print_matrix(m,N); // showing the complete matrix
             free(m);    
         }
     }
@@ -120,7 +121,7 @@ int main(int argc, char* argv[])
             MPI_Request request;
             MPI_Status status;
             FILE* data_file;
-            data_file=fopen("ex4_data.dat","wb");
+            data_file=fopen(FILE_NAME,"wb");
 
             size_t max_chunk_size = (size/np + 1);
 
@@ -169,9 +170,9 @@ int main(int argc, char* argv[])
 
             // Now I read the file for verifying the correctness
             double* complete_mat = (double*) malloc(sizeof(double)*N*N);
-            data_file = fopen("ex4_data.dat","r");
+            data_file = fopen(FILE_NAME,"r");
             fread(complete_mat,sizeof(double),N*N,data_file);
-            pm(complete_mat,N);
+            print_matrix(complete_mat,N);
 
             free(complete_mat);
             fclose(data_file);   
