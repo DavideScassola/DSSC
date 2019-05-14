@@ -1,0 +1,5 @@
+If you want to generate the executables you have to load:
+- cudatoolkit
+then you can compile through the Makefile (make all).
+
+

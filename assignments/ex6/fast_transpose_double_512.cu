@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #define N 8192
-#define THREAD_PER_BLOCK_SIDE_X 32
+#define THREAD_PER_BLOCK_SIDE_X 16
 #define THREAD_PER_BLOCK_SIDE_Y 32
 #define THREAD_PER_BLOCK THREAD_PER_BLOCK_SIDE_X*THREAD_PER_BLOCK_SIDE_Y
 #define TYPE double
@@ -78,7 +78,7 @@ int main()
     cudaEventRecord(stop);
 
 
-    //transfer matrix in host
+    // transfer matrix from device to host
     cudaMemcpy(h_out, d_out, size_in_memory, cudaMemcpyDeviceToHost);
 
 
